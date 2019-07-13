@@ -23,7 +23,7 @@ export default function asyncComponent(
   return class AsyncComponent extends Component<any, State> {
     static setupModuleState(mod: AsyncModule) {
       console.log('Appending reducer for:', chunkName);
-      if (appendAsyncReducer && chunkName) appendAsyncReducer(mod.routeModule);
+      if (appendAsyncReducer) appendAsyncReducer(mod.routeModule);
 
       console.log('Appending epic for:', chunkName);
       if (epicSubject$) epicSubject$.next(mod.routeModule.epic);

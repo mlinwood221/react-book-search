@@ -19,7 +19,6 @@
   "eslint.validate": ["javascript", "typescript", "typescriptreact"],
   "prettier.stylelintIntegration": true,
   "eslint.alwaysShowStatus": true,
-  "prettier.eslintIntegration": true,
   "jest.pathToJest": "",
   "jest.pathToConfig": "config/jest/config.json",
   "jest.restartJestOnSnapshotUpdate": true,
@@ -28,5 +27,8 @@
   "cucumberautocomplete.syncfeatures": "testcafe/features/*feature",
   "cucumberautocomplete.strictGherkinValidation": true,
   "cucumberautocomplete.smartSnippets": true,
-  "cucumberautocomplete.stepsInvariants": true
+  "cucumberautocomplete.stepsInvariants": true,
+  "eslint.packageManager": "yarn",
+  "npm.packageManager": "yarn",
+  "eslint.autoFixOnSave": true
 }

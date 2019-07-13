@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, fireEvent, cleanup } from '@testing-library/react'; // eslint-disable-line
-import 'jest-dom/extend-expect'; // eslint-disable-line
+import '@testing-library/jest-dom/extend-expect'; // eslint-disable-line
 import Pagination from './index';
 
 describe('Pagination', () => {

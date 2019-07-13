@@ -1,7 +1,7 @@
 import React, { useCallback, useState, ChangeEvent, FormEvent } from 'react';
+import searchIcon from 'material-design-icons/action/svg/production/ic_search_24px.svg';
 import Dropdown from '../Dropdown';
 import { SearchParam } from '../../redux/searchParams/types';
-import searchIcon from 'material-design-icons/action/svg/production/ic_search_24px.svg';
 
 import './SearchForm.scss';
 

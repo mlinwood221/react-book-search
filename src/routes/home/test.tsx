@@ -7,7 +7,7 @@ import {
   RenderResult,
   getAllByTestId
 } from '@testing-library/react';
-import 'jest-dom/extend-expect';
+import '@testing-library/jest-dom/extend-expect';
 import { Provider } from 'react-redux';
 import { MemoryRouter, Route } from 'react-router';
 import { createEpicMiddleware } from 'redux-observable';
