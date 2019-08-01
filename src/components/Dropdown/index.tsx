@@ -89,4 +89,4 @@ const Dropdown = <T extends {}>(props: Props<T>) => {
   );
 };
 
-export default Dropdown;
+export default (React.memo(Dropdown) as <T extends {}>(props: Props<T>) => JSX.Element);

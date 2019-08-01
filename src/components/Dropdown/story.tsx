@@ -31,7 +31,7 @@ storiesOf('Dropdown', module)
   .add('with few items', () => (
     <div>
       <MemoizedDropdown
-        items={getSearchParams(5)}
+        items={getSearchParams(3)}
         renderItem={i => ({ id: i.id, el: <div>{i.label}</div> })}
         onSelect={action('onSelect')}
         placeholder='Choose an item'
