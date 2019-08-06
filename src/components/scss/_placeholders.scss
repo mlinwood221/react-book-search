@@ -6,13 +6,26 @@
   }
 }
 
-%button {
+%clear-button {
   background: none;
   color: inherit;
   border: none;
   padding: 0;
   cursor: pointer;
   line-height: 1em;
+
+  &,
+  &:active,
+  &:focus {
+    outline: 0;
+  }
+}
+
+%svg-button {
+  @extend %clear-button;
+
+  min-width: 2em;
+  min-height: 2em;
 
   svg {
     @extend %svg-icon;

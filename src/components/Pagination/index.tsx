@@ -8,14 +8,14 @@ export type Props = {
   showPage: (page: number) => void;
 };
 
-const Pagination = (props: Props) => {
+const Pagination = ({ currentPage, pageCount, showPage }: Props) => {
   const handlePrevPage = useCallback(() => {
-    props.showPage(props.currentPage - 1);
-  }, [props.showPage, props.currentPage]);
+    showPage(currentPage - 1);
+  }, [showPage, currentPage]);
 
   const handleNextPage = useCallback(() => {
-    props.showPage(props.currentPage + 1);
-  }, [props.showPage, props.currentPage]);
+    showPage(currentPage + 1);
+  }, [showPage, currentPage]);
 
   return (
     <nav className="pagination">
@@ -29,7 +29,7 @@ const Pagination = (props: Props) => {
         </svg>
       </button>
       <span data-testid="current-page">
-        Showing page {props.currentPage} of {props.pageCount}
+        Showing page {currentPage} of {pageCount}
       </span>
       <button
         className="pagination__next-button"

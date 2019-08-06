@@ -31,28 +31,19 @@ module.exports = {
   },
   output: {
     path: distPath,
-    filename: isProductionMode ? '[name].[contenthash].bundle.js' : '[name].[hash].bundle.js' // @see: https://github.com/webpack/webpack.js.org/issues/2096
+    filename: isProductionMode
+      ? '[name].[contenthash].bundle.js'
+      : '[name].[hash].bundle.js' // @see: https://github.com/webpack/webpack.js.org/issues/2096
   },
   performance: {
     hints: isProductionMode ? 'warning' : false
   },
   optimization: {
     runtimeChunk: 'single',
+    moduleIds: 'hashed',
+    noEmitOnErrors: true,
     splitChunks: {
-      chunks: 'all',
-      cacheGroups: {
-        commons: {
-          test: /[\\/]node_modules[\\/]/,
-          name: 'vendors',
-          chunks: 'all'
-        }
-        // styles: {
-        //   name: 'styles',
-        //   test: /\.s?css$/,
-        //   chunks: 'all',
-        //   enforce: true
-        // }
-      }
+      chunks: 'all'
     }
   },
   module: {

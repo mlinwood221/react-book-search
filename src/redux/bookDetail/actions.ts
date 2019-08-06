@@ -1,4 +1,4 @@
-import { BookDetail } from './types';
+import { Detail } from './types';
 
 export function getBookDetail(
   bookId: string
@@ -11,7 +11,7 @@ export function getBookDetail(
   } as const;
 }
 
-export function bookDetailsReceived(bookDetail: BookDetail) {
+export function bookDetailsReceived(bookDetail: Detail) {
   return {
     type: 'react-book-search/bookDetail/BOOK_DETAIL_RECEIVED',
     payload: {

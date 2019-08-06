@@ -7,7 +7,7 @@ import {
   combineReducers
 } from 'redux';
 import { hot } from 'react-hot-loader/root';
-import { RouteChildrenProps } from 'react-router';
+import { RouteComponentProps } from 'react-router';
 import { combineEpics } from 'redux-observable';
 import MainLayout from '../../components/MainLayout';
 import booksReducer, {
@@ -53,7 +53,7 @@ type ActionProps = {
   actions: typeof booksActions & typeof searchActions;
 };
 
-export class Home extends Component<StateProps & ActionProps & RouteChildrenProps> {
+export class Home extends Component<StateProps & ActionProps & RouteComponentProps> {
   componentDidMount() {
     if (this.props.books.length === 0) this.props.actions.getBookPage(1);
     if (this.props.searchCategories.results.length === 0)

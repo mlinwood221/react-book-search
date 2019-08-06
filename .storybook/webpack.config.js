@@ -1,7 +1,4 @@
-const path = require('path');
-const getLoaders = require('../config/webpack/client/loaders');
-
-module.exports = async ({ config, mode }) => {
+module.exports = ({ config }) => {
   config.module.rules.push({
     test: /\.scss$/,
     loaders: ['style-loader', 'css-loader', 'sass-loader']

@@ -102,7 +102,7 @@ const SearchForm = (props: Props) => {
         />
         <button type="submit" className="search-form__button" data-testid="search-button">
           <svg
-            className="dropdown__icon dropdown__icon--arrow"
+            className="search-form__icon"
             viewBox={searchIcon.viewBox}
           >
             <use xlinkHref={`#${searchIcon.id}`} />

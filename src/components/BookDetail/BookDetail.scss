@@ -1,0 +1,39 @@
+@import '../scss/variables';
+@import '../scss/placeholders';
+
+/* @define book-detail */
+.book-detail {
+  &__nav,
+  &__info,
+  &__title,
+  &__content,
+  &__footer {
+    padding: get($spaces, 1000) 10vw;
+    margin: auto;
+  }
+
+  &__nav {
+    background-color: get($colors, action);
+  }
+
+  &__title {
+    background-color: lighten(get($colors, action), 10%);
+    line-height: 1em;
+  }
+
+  &__info {
+    background-color: lighten(get($colors, action), 20%);
+  }
+
+  &__back-button {
+    @extend %clear-button;
+  }
+
+  &__icon {
+    @extend %svg-icon;
+
+    height: 2em;
+    width: 2em;
+    fill: get($colors, action-text);
+  }
+}

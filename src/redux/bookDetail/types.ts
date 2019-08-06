@@ -1,6 +1,6 @@
 import * as actions from './actions';
 
-export type BookDetail = {
+export type Detail = {
   author: {
     avatar: string;
     name: string;
@@ -26,5 +26,5 @@ export type Action = GetBookDetailAction | BookDetailReceivedAction;
 
 export type State = Readonly<{
   loading: boolean;
-  bookDetail: BookDetail | null;
+  bookDetail: Detail | null;
 }>;

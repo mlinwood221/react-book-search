@@ -1,6 +1,5 @@
 import React, { useCallback, useState, useEffect } from 'react';
 import dayjs from 'dayjs';
-// @ts-ignore
 import relativeTime from 'dayjs/plugin/relativeTime';
 import favoriteIcon from 'material-design-icons/action/svg/production/ic_favorite_24px.svg';
 import favoriteBorderIcon from 'material-design-icons/action/svg/production/ic_favorite_border_24px.svg';
@@ -8,7 +7,7 @@ import calendarIcon from 'material-design-icons/action/svg/production/ic_date_ra
 import { Book } from '../../redux/books/types';
 import './BookCard.scss';
 
-export type Props = {
+type Props = {
   book: Book;
   onViewDetails: (book: Book) => void;
   onLike: (book: Book) => void;

@@ -1,6 +1,7 @@
 import React from 'react';
 import './MainLayout.scss';
 import Info from '../Info';
+import Loading from '../Loading';
 
 type Props = {
   loadingBooks: boolean;
@@ -13,7 +14,7 @@ type Props = {
 const MainLayout = (props: Props) => (
   <div className="main-layout">
     <div className="main-layout__status">
-      {props.loadingBooks && <h2>Loading...</h2>}
+      {props.loadingBooks && <Loading />}
       {props.error && <h2>{props.error}</h2>}
     </div>
     <div className="main-layout__books">{props.bookList}</div>

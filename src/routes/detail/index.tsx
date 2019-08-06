@@ -1,14 +1,17 @@
 import React, { Component, StrictMode } from 'react';
 import { connect } from 'react-redux';
 import { RouteComponentProps } from 'react-router';
+import { hot } from 'react-hot-loader/root';
 import { bindActionCreators, Dispatch as ReduxDispatch } from 'redux';
 import reducer, { actions, selectors, epic } from '../../redux/bookDetail';
-import { BookDetail } from '../../redux/bookDetail/types';
+import { Detail } from '../../redux/bookDetail/types';
 import { State } from '../../redux/store';
 import { RouteParams, RouteModule } from './types';
+import BookDetail from '../../components/BookDetail';
+import Loading from '../../components/Loading';
 
 type StateProps = {
-  bookDetail: BookDetail | null;
+  bookDetail: Detail | null;
   loading: boolean;
 };
 
@@ -20,7 +23,7 @@ type OwnProps = {
   bookId: string | null;
 };
 
-export class Detail extends Component<StateProps & ActionProps & OwnProps> {
+export class DetailRoute extends Component<StateProps & ActionProps & OwnProps & RouteComponentProps> {
   componentDidMount() {
     if (
       this.props.bookId &&
@@ -30,11 +33,15 @@ export class Detail extends Component<StateProps & ActionProps & OwnProps> {
   }
 
   render() {
-    return this.props.loading ? (
-      <div>Loading details...</div>
-    ) : (
+    return (
       <StrictMode>
-        <div>{this.props.bookDetail && this.props.bookDetail.name}</div>
+        {this.props.loading && <Loading />}
+        {this.props.bookDetail && (
+          <BookDetail
+            goBack={this.props.history.goBack}
+            bookDetail={this.props.bookDetail}
+          />
+        )}
       </StrictMode>
     );
   }
@@ -59,10 +66,12 @@ function mapDispatchToProps(dispatch: ReduxDispatch) {
   };
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Detail);
+export default hot(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(DetailRoute)
+);
 
 export const routeModule: Omit<RouteModule, 'state'> = {
   routeName: 'details',

@@ -1,4 +1,2 @@
-ios_saf >= 8
-chrome >= 49
-firefox >= 49
-ie > 10
+last 2 major versions
+not ie <= 10

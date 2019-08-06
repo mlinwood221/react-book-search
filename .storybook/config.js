@@ -1,12 +1,8 @@
 import { configure } from '@storybook/react';
-import '../src/components/mainStyles';
 
-function importAll (r) {
-  r.keys().forEach(r);
-}
-
+const req = require.context('../src/components', true, /story.tsx$/);
 function loadStories() {
-  importAll(require.context('../src/components', true, /story.tsx$/));
+  req.keys().forEach(filename => req(filename));
 }
 
 configure(loadStories, module);

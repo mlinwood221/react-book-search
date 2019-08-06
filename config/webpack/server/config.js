@@ -36,11 +36,6 @@ module.exports = {
   ], // in order to ignore all modules in node_modules folder
   plugins: [
     new CleanWebpackPlugin(),
-    new webpack.HashedModuleIdsPlugin({
-      hashFunction: 'sha256',
-      hashDigest: 'hex',
-      hashDigestLength: 20
-    }),
     new webpack.EnvironmentPlugin({
       SERVER: true
     })
@@ -64,19 +59,19 @@ module.exports = {
           }
         ]
       },
-      // {
-      //   enforce: 'pre',
-      //   test: /\.(ts|tsx)$/,
-      //   exclude: /node_modules/,
-      //   include: [sourcePath],
-      //   use: {
-      //     loader: 'eslint-loader',
-      //     options: {
-      //       configFile: 'config/linters/.eslintrc.json',
-      //       failOnError: true
-      //     }
-      //   }
-      // },
+      {
+        enforce: 'pre',
+        test: /\.(ts|tsx)$/,
+        exclude: /node_modules/,
+        include: [sourcePath],
+        use: {
+          loader: 'eslint-loader',
+          options: {
+            configFile: 'config/linters/.eslintrc.json',
+            failOnError: true
+          }
+        }
+      },
       {
         test: /\.(ts|tsx)$/,
         exclude: /node_modules/,
