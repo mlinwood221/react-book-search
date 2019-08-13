@@ -73,9 +73,6 @@
 
   &__action {
     cursor: pointer;
-    display: flex;
-    flex-flow: row nowrap;
-    align-items: center;
 
     &--no-click {
       cursor: default;

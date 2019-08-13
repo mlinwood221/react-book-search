@@ -1,0 +1,47 @@
+@import '../scss/variables';
+
+/* @define toolbar */
+.toolbar {
+  background: get($colors, action);
+  color: get($colors, action-text);
+  vertical-align: middle;
+  font-family: $default-font-family;
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  padding: get($spaces, 1000);
+  position: sticky;
+  top: 0;
+  left: 0;
+  z-index: 3;
+
+  &__icon {
+    flex: 0 0 auto;
+    fill: get($colors, action-text);
+    color: get($colors, action-text);
+    cursor: pointer;
+    min-width: 2em;
+
+    &:hover {
+      fill: lighten(get($colors, action), 25%);
+      color: lighten(get($colors, action), 25%);
+    }
+
+    & + & {
+      margin-left: get($spaces, 1000);
+    }
+  }
+
+  &__title {
+    flex: 1 1 auto;
+    margin: 0 get($spaces, 1000);
+    user-select: none;
+  }
+
+  &__actions {
+    margin-left: auto;
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+  }
+}

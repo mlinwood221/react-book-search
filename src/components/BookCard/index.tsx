@@ -1,11 +1,12 @@
 import React, { useCallback, useState, useEffect } from 'react';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
-import favoriteIcon from 'material-design-icons/action/svg/production/ic_favorite_24px.svg';
-import favoriteBorderIcon from 'material-design-icons/action/svg/production/ic_favorite_border_24px.svg';
-import calendarIcon from 'material-design-icons/action/svg/production/ic_date_range_24px.svg';
+import favoriteIcon from '@mdi/svg/svg/heart.svg';
+import favoriteBorderIcon from '@mdi/svg/svg/heart-outline.svg';
+import calendarIcon from '@mdi/svg/svg/calendar-clock.svg';
 import { Book } from '../../redux/books/types';
-import './BookCard.scss';
+import TextWithIcon from '../TextWithIcon';
+import './style.scss';
 
 type Props = {
   book: Book;
@@ -15,7 +16,7 @@ type Props = {
 
 dayjs.extend(relativeTime);
 
-const BookCard = ({onViewDetails, onLike, book}: Props) => {
+const BookCard = ({ onViewDetails, onLike, book }: Props) => {
   const handleViewDetails = useCallback(() => {
     onViewDetails(book);
   }, [onViewDetails, book]);
@@ -36,7 +37,7 @@ const BookCard = ({onViewDetails, onLike, book}: Props) => {
   return (
     <div
       className="book-card"
-      style={{ backgroundImage: `url(${book.cover})`, }}
+      style={{ backgroundImage: `url(${book.cover})` }}
       onClick={handleViewDetails}
     >
       <div className="book-card__header">
@@ -45,23 +46,17 @@ const BookCard = ({onViewDetails, onLike, book}: Props) => {
       </div>
       <div className="book-card__actions">
         <div className="book-card__action" onClick={handleLike} data-testid="like-button">
-          {book.liked && (
-            <svg viewBox={favoriteIcon.viewBox} className="book-card__icon">
-              <use xlinkHref={`#${favoriteIcon.id}`} />
-            </svg>
-          )}
-          {!book.liked && (
-            <svg viewBox={favoriteBorderIcon.viewBox} className="book-card__icon">
-              <use xlinkHref={`#${favoriteBorderIcon.id}`} />
-            </svg>
-          )}
-          {`${book.likes} ${book.likes > 1 ? 'likes' : 'like'}`}
+          <TextWithIcon
+            icon={book.liked ? favoriteIcon : favoriteBorderIcon}
+            text={`${book.likes} ${book.likes > 1 ? 'likes' : 'like'}`}
+          />
         </div>
         <div className="book-card__action book-card__action--align-right book-card__action--no-click">
-          <svg viewBox={calendarIcon.viewBox} className="book-card__icon">
-            <use xlinkHref={`#${calendarIcon.id}`} />
-          </svg>
-          <div data-testid="relative-date">{relativeDate}</div>
+          <TextWithIcon
+            data-testid="relative-date"
+            icon={calendarIcon}
+            text={relativeDate}
+          />
         </div>
       </div>
     </div>

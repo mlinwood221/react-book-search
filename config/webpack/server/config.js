@@ -31,7 +31,7 @@ module.exports = {
   // externals: nodeModules,
   externals: [
     nodeExternals({
-      whitelist: /roboto|material/
+      whitelist: /roboto|mdi/i
     })
   ], // in order to ignore all modules in node_modules folder
   plugins: [
@@ -106,7 +106,7 @@ module.exports = {
         use: 'null-loader'
       },
       {
-        test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
+        test: /\.svg$/,
         use: [
           {
             loader: 'svg-sprite-loader'

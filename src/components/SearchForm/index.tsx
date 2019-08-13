@@ -1,9 +1,9 @@
 import React, { useCallback, useState, ChangeEvent, FormEvent } from 'react';
-import searchIcon from 'material-design-icons/action/svg/production/ic_search_24px.svg';
+import searchIcon from '@mdi/svg/svg/magnify.svg';
 import Dropdown from '../Dropdown';
 import { SearchParam } from '../../redux/searchParams/types';
-
-import './SearchForm.scss';
+import SvgButton from '../SvgButton';
+import './style.scss';
 
 export type Props = {
   search: (category: string, genre: string, query: string) => void;
@@ -36,7 +36,10 @@ const SearchForm = (props: Props) => {
     props.search(category, genre, query);
   };
 
-  const renderDropdownItem = useCallback((item: SearchParam) => ({ id: item.id, el: item.label }), []);
+  const renderDropdownItem = useCallback(
+    (item: SearchParam) => ({ id: item.id, el: item.label }),
+    []
+  );
 
   return (
     <div className="search-form">
@@ -70,7 +73,7 @@ const SearchForm = (props: Props) => {
               </div>
             )}
           </div>
-          <hr />
+          <hr className="search-form__divider" />
         </div>
       )}
 
@@ -100,14 +103,9 @@ const SearchForm = (props: Props) => {
           onChange={handleQueryChange}
           data-testid="query-input"
         />
-        <button type="submit" className="search-form__button" data-testid="search-button">
-          <svg
-            className="search-form__icon"
-            viewBox={searchIcon.viewBox}
-          >
-            <use xlinkHref={`#${searchIcon.id}`} />
-          </svg>
-        </button>
+        <div className="search-form__button">
+          <SvgButton icon={searchIcon} data-testid="search-button" />
+        </div>
       </form>
     </div>
   );

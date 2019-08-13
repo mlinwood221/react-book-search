@@ -10,6 +10,10 @@
     flex-flow: row nowrap;
   }
 
+  &__divider {
+    border-top: solid 1px get($colors, greys, 2000);
+  }
+
   &__selected-name {
     color: get($colors, greys, 3000);
     margin-right: get($spaces, 500);
@@ -44,8 +48,7 @@
   }
 
   &__button {
-    @extend %svg-button;
-
     margin-left: get($spaces, 1000);
+    display: inline-flex;
   }
 }

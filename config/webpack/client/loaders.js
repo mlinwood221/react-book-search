@@ -118,14 +118,12 @@ module.exports = function getLoaders(isProductionMode, srcPath) {
         ]
     },
     {
-      test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
+      test: /\.svg$/,
       use: [
         {
           loader: 'svg-sprite-loader',
           options: {
-            // esModule: false
-            // extract: true,
-            // spriteFilename: '/img/icon.svg'
+            extract: false,
           }
         },
         {

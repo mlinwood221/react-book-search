@@ -12,8 +12,6 @@ describe('Pagination', () => {
     handleShowPage = jest.fn();
   });
 
-  afterEach(cleanup);
-
   test('calls the "showPage" prop on "prev page" click', () => {
     const wrapper = render(
       <Pagination currentPage={3} pageCount={6} showPage={handleShowPage} />

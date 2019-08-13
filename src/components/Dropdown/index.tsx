@@ -1,7 +1,7 @@
 import React, { useCallback, useState } from 'react';
-import arrowIcon from 'material-design-icons/navigation/svg/production/ic_expand_more_18px.svg';
-import xIcon from 'material-design-icons/navigation/svg/production/ic_close_18px.svg';
-import './Dropdown.scss';
+import arrowIcon from '@mdi/svg/svg/chevron-down.svg';
+import xIcon from '@mdi/svg/svg/close.svg';
+import './style.scss';
 
 export type Props<T> = {
   items: T[];

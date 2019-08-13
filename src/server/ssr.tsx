@@ -4,7 +4,7 @@ import path from 'path';
 import React from 'react';
 import { renderToString } from 'react-dom/server';
 import { Provider } from 'react-redux';
-import { StaticRouter } from 'react-router';
+import { StaticRouter, StaticRouterContext } from 'react-router';
 import { matchPath } from 'react-router-dom';
 import { Store } from 'redux';
 import { promisify } from 'util';
@@ -67,7 +67,7 @@ async function getAsyncChunksScriptTags(loadedChunkNames: string[]) {
   return fileContents.map(content => `<script>${content}</script>`).join('');
 }
 
-async function handleSsrReady(
+async function renderPageWithReduxStateAndInlineScripts(
   state: {},
   loadedChunkNames: string[],
   renderedHtml: string
@@ -75,6 +75,21 @@ async function handleSsrReady(
   // Write initial async chuncks
   const asyncChunksScriptTags = await getAsyncChunksScriptTags(loadedChunkNames);
   return renderFullPage(renderedHtml, state, asyncChunksScriptTags);
+}
+
+function renderApp(
+  store,
+  url: string,
+  reactRouterStaticContext: {},
+  loadedChunkNames: string[]
+) {
+  return renderToString(
+    <Provider store={store}>
+      <StaticRouter location={url} context={reactRouterStaticContext}>
+        <App loadedChunkNames={loadedChunkNames} />
+      </StaticRouter>
+    </Provider>
+  );
 }
 
 function waitForInitialData(
@@ -87,15 +102,7 @@ function waitForInitialData(
     let unsubscribe: () => void;
     function handleStoreChange() {
       if (store.getState().ssr && store.getState().ssr.ready) {
-        resolve(
-          renderToString(
-            <Provider store={store}>
-              <StaticRouter location={url} context={reactRouterStaticContext}>
-                <App loadedChunkNames={loadedChunkNames} />
-              </StaticRouter>
-            </Provider>
-          )
-        );
+        resolve(renderApp(store, url, reactRouterStaticContext, loadedChunkNames));
         unsubscribe();
       }
     }
@@ -126,31 +133,32 @@ export default async function handleRender(
     }))
     .find(r => !!r.reactRouterMatch);
 
-  if (!routeMatch) {
-    res.end();
-    return;
-  }
-
-  const reactRouterStaticContext = {};
+  const reactRouterStaticContext: StaticRouterContext = {};
 
   try {
-    if (routeMatch.loadSSRData)
+    if (routeMatch && routeMatch.loadSSRData)
       routeMatch.loadSSRData(
         store.dispatch,
         routeMatch.reactRouterMatch ? routeMatch.reactRouterMatch.params : null
       );
-    const renderedHtml = await waitForInitialData(
-      store,
-      req.url,
-      reactRouterStaticContext,
-      loadedChunkNames
-    );
-    const renderedApp = await handleSsrReady(
+
+    const renderedHtml = routeMatch
+      ? await waitForInitialData(
+        store,
+        req.url,
+        reactRouterStaticContext,
+        loadedChunkNames
+      )
+      : renderApp(store, req.url, reactRouterStaticContext, loadedChunkNames);
+
+    const renderedPage = await renderPageWithReduxStateAndInlineScripts(
       store.getState(),
       loadedChunkNames,
       renderedHtml
     );
-    res.send(renderedApp);
+
+    if (reactRouterStaticContext.url) res.redirect(301, reactRouterStaticContext.url);
+    else res.send(renderedPage);
     next();
   } catch (error) {
     next(error);

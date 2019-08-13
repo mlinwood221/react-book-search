@@ -1,0 +1,19 @@
+@import '../scss/variables';
+
+/* @define text-with-icon */
+.text-with-icon {
+  font-size: 0.8em;
+  vertical-align: middle;
+  font-family: $default-font-family;
+  display: inline-flex;
+  flex-flow: row nowrap;
+  align-items: center;
+
+  &__icon {
+    margin-right: 5px;
+    fill: get($colors, action);
+    display: inline-block;
+    height: 2em;
+    width: 2em;
+  }
+}

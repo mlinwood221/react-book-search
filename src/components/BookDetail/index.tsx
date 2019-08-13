@@ -1,9 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
-import backIcon from 'material-design-icons/navigation/svg/production/ic_arrow_back_18px.svg';
+import backIcon from '@mdi/svg/svg/arrow-left.svg';
+import authorIcon from '@mdi/svg/svg/account.svg';
+import calendarIcon from '@mdi/svg/svg/calendar-clock.svg';
+import favoriteIcon from '@mdi/svg/svg/heart.svg';
+import tagIcon from '@mdi/svg/svg/tag-multiple.svg';
+import Toolbar from '../Toolbar';
 import { Detail } from '../../redux/bookDetail/types';
-import './BookDetail.scss';
+import TextWithIcon from '../TextWithIcon';
+import './style.scss';
 
 type Props = {
   bookDetail: Detail;
@@ -19,32 +25,32 @@ const BookDetail = ({ bookDetail, goBack }: Props) => {
   }, [bookDetail.published]);
 
   return (
-    <article className="book-detail">
-      <nav className="book-detail__nav">
-        <button onClick={goBack} className="book-detail__back-button">
-          <svg viewBox={backIcon.viewBox} className="book-detail__icon">
-            <use xlinkHref={`#${backIcon.id}`} />
-          </svg>
-        </button>
-      </nav>
-      <header className="book-detail__header">
-        <h1 className="book-detail__title">{bookDetail.name}</h1>
-        <p className="book-detail__info">
-          <div>{bookDetail.author.name}</div>
-          <div>{relativeDate}</div>
-          <div>{bookDetail.likes} likes</div>
-        </p>
-      </header>
-      <div className="book-detail__content">
-        <p>{bookDetail.description}</p>
-        <p>{bookDetail.introduction}</p>
-      </div>
-      <footer className="book-detail__footer">
-        <div>
-          <img src={bookDetail.author.avatar} />
+    <>
+      <Toolbar icon={backIcon} title={bookDetail.name} onMenuClick={goBack} />
+      <article className="book-detail">
+        <img className="book-detail__image" src={bookDetail.cover} />
+
+        <div className="book-detail__status">
+          <TextWithIcon icon={authorIcon} text={bookDetail.author.name} />
+          <TextWithIcon icon={calendarIcon} text={relativeDate} />
+          <TextWithIcon icon={favoriteIcon} text={`${bookDetail.likes} likes`} />
+          <TextWithIcon
+            icon={tagIcon}
+            text={`${bookDetail.genre.category} / ${bookDetail.genre.name}`}
+          />
         </div>
-      </footer>
-    </article>
+
+        <div className="book-detail__description">
+          <p>{bookDetail.description}</p>
+          <p>{bookDetail.introduction}</p>
+        </div>
+
+        <footer className="book-detail__footer">
+          <img src={bookDetail.author.avatar} className="book-detail__author-img" />
+          <p>Written by {bookDetail.author.name}</p>
+        </footer>
+      </article>
+    </>
   );
 };
 

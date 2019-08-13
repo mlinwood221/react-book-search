@@ -1,0 +1,46 @@
+@import '../scss/variables';
+@import '../scss/placeholders';
+
+/* @define book-detail */
+.book-detail {
+  padding: 5vh 15vw;
+  font-family: $default-font-family;
+  display: grid;
+  grid-template-columns: 1fr max-content;
+  grid-template-rows: max-content 1fr max-content;
+  grid-template-areas:
+    'image status'
+    'description description'
+    'footer footer';
+
+  &__image {
+    grid-area: image;
+    max-height: 45vh;
+  }
+
+  &__status {
+    grid-area: status;
+    display: flex;
+    flex-flow: column nowrap;
+    line-height: 2.5em;
+  }
+
+  &__description {
+    grid-area: description;
+    text-align: justify;
+    margin-top: get($spaces, 1000);
+  }
+
+  &__footer {
+    grid-area: footer;
+    border-top: solid 1px get($colors, greys, 2000);
+    margin-top: get($spaces, 1000);
+    padding-top: get($spaces, 2000);
+    text-align: center;
+  }
+
+  &__author-img {
+    border-radius: 50%;
+    max-width: 130px;
+  }
+}

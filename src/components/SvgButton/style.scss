@@ -1,0 +1,37 @@
+@import '../scss/variables';
+@import '../scss/placeholders';
+
+/* @define svg-button */
+.svg-button {
+  @extend %clear-button;
+
+  min-width: 2em;
+  min-height: 2em;
+
+  &__icon {
+    fill: get($colors, action);
+    min-width: 1em;
+    min-height: 1em;
+    max-width: 2em;
+    max-height: 2em;
+    vertical-align: middle;
+  }
+
+  &--inverted-color {
+    .svg-button__icon {
+      fill: get($colors, action-text);
+    }
+  }
+
+  &:hover {
+    .svg-button__icon {
+      fill: lighten(get($colors, action), 15%);
+    }
+  }
+
+  &--inverted-color:hover {
+    .svg-button__icon {
+      fill: lighten(get($colors, action), 30%);
+    }
+  }
+}

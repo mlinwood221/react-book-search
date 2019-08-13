@@ -21,8 +21,6 @@
 
   &__prev-button,
   &__next-button {
-    @extend %svg-button;
-
     @media #{map-get($breakpoints, medium)} {
       width: 3em;
     }
