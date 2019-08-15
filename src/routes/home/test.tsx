@@ -5,7 +5,8 @@ import {
   fireEvent,
   cleanup,
   RenderResult,
-  getAllByTestId
+  getAllByTestId,
+  wait
 } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import { Provider } from 'react-redux';
@@ -129,7 +130,6 @@ describe('Home route', () => {
 
   afterEach(() => {
     cleanup();
-    if (ajaxMock.mockReset) ajaxMock.mockReset();
   });
 
   describe('Pagination', () => {
@@ -158,153 +158,163 @@ describe('Home route', () => {
       wrapper = renderHomeWithStore(store);
     });
 
-    test('dispatches [GET_BOOK_PAGE, PAGED_BOOKS_RECEIVED] on "next page button" click', done => {
+    test('dispatches [GET_BOOK_PAGE, PAGED_BOOKS_RECEIVED] on "next page button" click', async () => {
       expect(wrapper.getByTestId('current-page')).toHaveTextContent(
         'Showing page 3 of 6'
       );
       fireEvent.click(wrapper.getByTestId('goto-next-page'));
 
-      setTimeout(() => {
-        expect(wrapper.getByTestId('current-page')).toHaveTextContent(
-          'Showing page 4 of 123'
-        );
-        expect(dispatchSpy.mock.calls).toEqual([
-          [
-            {
-              type: 'react-book-search/searchParams/GET_CATEGORIES'
-            }
-          ],
-          [
-            {
-              type: 'react-book-search/searchParams/CATEGORIES_RECEIVED',
-              payload: categoriesMock
-            }
-          ],
-          [
-            {
-              type: 'react-book-search/searchParams/GET_GENRES'
-            }
-          ],
-          [
-            {
-              type: 'react-book-search/searchParams/GENRES_RECEIVED',
-              payload: genresMock
-            }
-          ],
-          [
-            {
-              payload: {
-                category: 'test categ',
-                genre: 'test genre',
-                page: 4,
-                query: 'test query'
-              },
-              type: 'react-book-search/books/GET_BOOK_PAGE'
-            }
-          ],
-          [
-            {
-              payload: {
-                books: [bookMock2],
-                pageCount: 123
-              },
-              type: 'react-book-search/books/PAGED_BOOKS_RECEIVED'
-            }
-          ]
-        ]);
+      await wait(
+        () => {
+          expect(wrapper.getByTestId('current-page')).toHaveTextContent(
+            'Showing page 4 of 123'
+          );
+          expect(dispatchSpy.mock.calls).toEqual([
+            [
+              {
+                type: 'react-book-search/searchParams/GET_CATEGORIES'
+              }
+            ],
+            [
+              {
+                type: 'react-book-search/searchParams/CATEGORIES_RECEIVED',
+                payload: categoriesMock
+              }
+            ],
+            [
+              {
+                type: 'react-book-search/searchParams/GET_GENRES'
+              }
+            ],
+            [
+              {
+                type: 'react-book-search/searchParams/GENRES_RECEIVED',
+                payload: genresMock
+              }
+            ],
+            [
+              {
+                payload: {
+                  category: 'test categ',
+                  genre: 'test genre',
+                  page: 4,
+                  query: 'test query'
+                },
+                type: 'react-book-search/books/GET_BOOK_PAGE'
+              }
+            ],
+            [
+              {
+                payload: {
+                  books: [bookMock2],
+                  pageCount: 123
+                },
+                type: 'react-book-search/books/PAGED_BOOKS_RECEIVED'
+              }
+            ]
+          ]);
 
-        expect(ajaxMock).toHaveBeenCalledTimes(3);
-        expect(ajaxMock.mock.calls[0][0].url).toEqual(
-          expect.stringMatching(/\/api\/searchCategories$/)
-        );
+          expect(ajaxMock).toHaveBeenCalledTimes(3);
+          expect(ajaxMock.mock.calls[0][0].url).toEqual(
+            expect.stringMatching(/\/api\/searchCategories$/)
+          );
 
-        expect(ajaxMock.mock.calls[1][0].url).toEqual(
-          expect.stringMatching(/\/api\/searchGenres$/)
-        );
+          expect(ajaxMock.mock.calls[1][0].url).toEqual(
+            expect.stringMatching(/\/api\/searchGenres$/)
+          );
 
-        expect(ajaxMock.mock.calls[2][0].url).toEqual(
-          expect.stringMatching(
-            /\/api\/books\?page=4&category=test categ&genre=test genre&query=test query$/
-          )
-        );
-        done();
-      }, 510);
+          expect(ajaxMock.mock.calls[2][0].url).toEqual(
+            expect.stringMatching(
+              /\/api\/books\?page=4&category=test categ&genre=test genre&query=test query$/
+            )
+          );
+          
+        },
+        {
+          timeout: 510
+        }
+      );
     });
 
-    test('dispatches [GET_BOOK_PAGE, PAGED_BOOKS_RECEIVED] on "prev page button" click', done => {
+    test('dispatches [GET_BOOK_PAGE, PAGED_BOOKS_RECEIVED] on "prev page button" click', async () => {
       expect(wrapper.getByTestId('current-page')).toHaveTextContent(
         'Showing page 3 of 6'
       );
 
       fireEvent.click(wrapper.getByTestId('goto-prev-page'));
 
-      setTimeout(() => {
-        expect(wrapper.getByTestId('current-page')).toHaveTextContent(
-          'Showing page 2 of 123'
-        );
+      await wait(
+        () => {
+          expect(wrapper.getByTestId('current-page')).toHaveTextContent(
+            'Showing page 2 of 123'
+          );
 
-        expect(dispatchSpy.mock.calls).toEqual([
-          [
-            {
-              type: 'react-book-search/searchParams/GET_CATEGORIES'
-            }
-          ],
-          [
-            {
-              type: 'react-book-search/searchParams/CATEGORIES_RECEIVED',
-              payload: categoriesMock
-            }
-          ],
-          [
-            {
-              type: 'react-book-search/searchParams/GET_GENRES'
-            }
-          ],
-          [
-            {
-              type: 'react-book-search/searchParams/GENRES_RECEIVED',
-              payload: genresMock
-            }
-          ],
-          [
-            {
-              payload: {
-                category: 'test categ',
-                genre: 'test genre',
-                page: 2,
-                query: 'test query'
-              },
-              type: 'react-book-search/books/GET_BOOK_PAGE'
-            }
-          ],
-          [
-            {
-              payload: {
-                books: [bookMock2],
-                pageCount: 123
-              },
-              type: 'react-book-search/books/PAGED_BOOKS_RECEIVED'
-            }
-          ]
-        ]);
+          expect(dispatchSpy.mock.calls).toEqual([
+            [
+              {
+                type: 'react-book-search/searchParams/GET_CATEGORIES'
+              }
+            ],
+            [
+              {
+                type: 'react-book-search/searchParams/CATEGORIES_RECEIVED',
+                payload: categoriesMock
+              }
+            ],
+            [
+              {
+                type: 'react-book-search/searchParams/GET_GENRES'
+              }
+            ],
+            [
+              {
+                type: 'react-book-search/searchParams/GENRES_RECEIVED',
+                payload: genresMock
+              }
+            ],
+            [
+              {
+                payload: {
+                  category: 'test categ',
+                  genre: 'test genre',
+                  page: 2,
+                  query: 'test query'
+                },
+                type: 'react-book-search/books/GET_BOOK_PAGE'
+              }
+            ],
+            [
+              {
+                payload: {
+                  books: [bookMock2],
+                  pageCount: 123
+                },
+                type: 'react-book-search/books/PAGED_BOOKS_RECEIVED'
+              }
+            ]
+          ]);
 
-        expect(ajaxMock).toHaveBeenCalledTimes(3);
+          expect(ajaxMock).toHaveBeenCalledTimes(3);
 
-        expect(ajaxMock.mock.calls[0][0].url).toEqual(
-          expect.stringMatching(/\/api\/searchCategories$/)
-        );
+          expect(ajaxMock.mock.calls[0][0].url).toEqual(
+            expect.stringMatching(/\/api\/searchCategories$/)
+          );
 
-        expect(ajaxMock.mock.calls[1][0].url).toEqual(
-          expect.stringMatching(/\/api\/searchGenres$/)
-        );
+          expect(ajaxMock.mock.calls[1][0].url).toEqual(
+            expect.stringMatching(/\/api\/searchGenres$/)
+          );
 
-        expect(ajaxMock.mock.calls[2][0].url).toEqual(
-          expect.stringMatching(
-            /\/api\/books\?page=2&category=test categ&genre=test genre&query=test query$/
-          )
-        );
-        done();
-      }, 510);
+          expect(ajaxMock.mock.calls[2][0].url).toEqual(
+            expect.stringMatching(
+              /\/api\/books\?page=2&category=test categ&genre=test genre&query=test query$/
+            )
+          );
+          
+        },
+        {
+          timeout: 510
+        }
+      );
     });
   });
 
@@ -334,7 +344,7 @@ describe('Home route', () => {
       wrapper = renderHomeWithStore(store);
     });
 
-    test('dispatches [GET_BOOK_PAGE, PAGED_BOOKS_RECEIVED] with search params on "search button" click', done => {
+    test('dispatches [GET_BOOK_PAGE, PAGED_BOOKS_RECEIVED] with search params on "search button" click', async () => {
       expect(wrapper.getByTestId('current-category')).toHaveTextContent('');
       expect(wrapper.getByTestId('current-genre')).toHaveTextContent('');
       expect(wrapper.getByTestId('current-query')).toHaveTextContent('');
@@ -353,71 +363,78 @@ describe('Home route', () => {
       });
       fireEvent.click(wrapper.getByTestId('search-button'));
 
-      setTimeout(() => {
-        expect(wrapper.getByTestId('current-category')).toHaveTextContent('Fiction');
-        expect(wrapper.getByTestId('current-genre')).toHaveTextContent('Genre 2');
-        expect(wrapper.getByTestId('current-query')).toHaveTextContent('ccc');
+      await wait(
+        () => {
+          expect(wrapper.getByTestId('current-category')).toHaveTextContent('Fiction');
+          expect(wrapper.getByTestId('current-genre')).toHaveTextContent('Genre 2');
+          expect(wrapper.getByTestId('current-query')).toHaveTextContent('ccc');
 
-        expect(dispatchSpy.mock.calls).toEqual([
-          [
-            {
-              type: 'react-book-search/searchParams/GET_CATEGORIES'
-            }
-          ],
-          [
-            {
-              type: 'react-book-search/searchParams/CATEGORIES_RECEIVED',
-              payload: categoriesMock
-            }
-          ],
-          [
-            {
-              type: 'react-book-search/searchParams/GET_GENRES'
-            }
-          ],
-          [
-            {
-              type: 'react-book-search/searchParams/GENRES_RECEIVED',
-              payload: genresMock
-            }
-          ],
-          [
-            {
-              payload: {
-                category: 'Fiction',
-                genre: 'Genre 2',
-                page: 1,
-                query: 'ccc'
-              },
-              type: 'react-book-search/books/GET_BOOK_PAGE'
-            }
-          ],
-          [
-            {
-              payload: {
-                books: [bookMock2],
-                pageCount: 123
-              },
-              type: 'react-book-search/books/PAGED_BOOKS_RECEIVED'
-            }
-          ]
-        ]);
+          expect(dispatchSpy.mock.calls).toEqual([
+            [
+              {
+                type: 'react-book-search/searchParams/GET_CATEGORIES'
+              }
+            ],
+            [
+              {
+                type: 'react-book-search/searchParams/CATEGORIES_RECEIVED',
+                payload: categoriesMock
+              }
+            ],
+            [
+              {
+                type: 'react-book-search/searchParams/GET_GENRES'
+              }
+            ],
+            [
+              {
+                type: 'react-book-search/searchParams/GENRES_RECEIVED',
+                payload: genresMock
+              }
+            ],
+            [
+              {
+                payload: {
+                  category: 'Fiction',
+                  genre: 'Genre 2',
+                  page: 1,
+                  query: 'ccc'
+                },
+                type: 'react-book-search/books/GET_BOOK_PAGE'
+              }
+            ],
+            [
+              {
+                payload: {
+                  books: [bookMock2],
+                  pageCount: 123
+                },
+                type: 'react-book-search/books/PAGED_BOOKS_RECEIVED'
+              }
+            ]
+          ]);
 
-        expect(ajaxMock).toHaveBeenCalledTimes(3);
+          expect(ajaxMock).toHaveBeenCalledTimes(3);
 
-        expect(ajaxMock.mock.calls[0][0].url).toEqual(
-          expect.stringMatching(/\/api\/searchCategories$/)
-        );
+          expect(ajaxMock.mock.calls[0][0].url).toEqual(
+            expect.stringMatching(/\/api\/searchCategories$/)
+          );
 
-        expect(ajaxMock.mock.calls[1][0].url).toEqual(
-          expect.stringMatching(/\/api\/searchGenres$/)
-        );
+          expect(ajaxMock.mock.calls[1][0].url).toEqual(
+            expect.stringMatching(/\/api\/searchGenres$/)
+          );
 
-        expect(ajaxMock.mock.calls[2][0].url).toEqual(
-          expect.stringMatching(/\/api\/books\?page=1&category=Fiction&genre=Genre 2&query=ccc$/)
-        );
-        done();
-      }, 510);
+          expect(ajaxMock.mock.calls[2][0].url).toEqual(
+            expect.stringMatching(
+              /\/api\/books\?page=1&category=Fiction&genre=Genre 2&query=ccc$/
+            )
+          );
+          
+        },
+        {
+          timeout: 510
+        }
+      );
     });
   });
 
@@ -430,7 +447,7 @@ describe('Home route', () => {
       expect(wrapper.container.textContent).toEqual('book 123 details');
     });
 
-    test('dispatches [LIKE_BOOK, BOOK_REFRESHED] on "like button" click', done => {
+    test('dispatches [LIKE_BOOK, BOOK_REFRESHED] on "like button" click', async () => {
       const updatedBook = {
         ...bookMock,
         likes: 2
@@ -463,64 +480,67 @@ describe('Home route', () => {
       fireEvent.click(wrapper.getByTestId('like-button'));
 
       // Assert
-      setTimeout(() => {
-        expect(wrapper.getByTestId('like-button')).toHaveTextContent('2 likes');
+      await wait(
+        () => {
+          expect(wrapper.getByTestId('like-button')).toHaveTextContent('2 likes');
 
-        expect(dispatchSpy.mock.calls).toEqual([
-          [
-            {
-              type: 'react-book-search/searchParams/GET_CATEGORIES'
-            }
-          ],
-          [
-            {
-              type: 'react-book-search/searchParams/CATEGORIES_RECEIVED',
-              payload: categoriesMock
-            }
-          ],
-          [
-            {
-              type: 'react-book-search/searchParams/GET_GENRES'
-            }
-          ],
-          [
-            {
-              type: 'react-book-search/searchParams/GENRES_RECEIVED',
-              payload: genresMock
-            }
-          ],
-          [
-            {
-              payload: {
-                bookId: '123',
-                liked: true
-              },
-              type: 'react-book-search/books/LIKE_BOOK'
-            }
-          ],
-          [
-            {
-              payload: {
-                book: updatedBook
-              },
-              type: 'react-book-search/books/BOOK_REFRESHED'
-            }
-          ]
-        ]);
+          expect(dispatchSpy.mock.calls).toEqual([
+            [
+              {
+                type: 'react-book-search/searchParams/GET_CATEGORIES'
+              }
+            ],
+            [
+              {
+                type: 'react-book-search/searchParams/CATEGORIES_RECEIVED',
+                payload: categoriesMock
+              }
+            ],
+            [
+              {
+                type: 'react-book-search/searchParams/GET_GENRES'
+              }
+            ],
+            [
+              {
+                type: 'react-book-search/searchParams/GENRES_RECEIVED',
+                payload: genresMock
+              }
+            ],
+            [
+              {
+                payload: {
+                  bookId: '123',
+                  liked: true
+                },
+                type: 'react-book-search/books/LIKE_BOOK'
+              }
+            ],
+            [
+              {
+                payload: {
+                  book: updatedBook
+                },
+                type: 'react-book-search/books/BOOK_REFRESHED'
+              }
+            ]
+          ]);
 
-        expect(ajaxMockObj.patch).toHaveBeenCalledTimes(1);
-        expect(ajaxMockObj.patch.mock.calls[0][0]).toEqual(
-          expect.stringMatching(/\/api\/books\/123$/)
-        );
-        expect(ajaxMockObj.patch.mock.calls[0][1]).toEqual({
-          liked: true
-        });
-        expect(ajaxMockObj.patch.mock.calls[0][2]).toEqual({
-          'Content-Type': 'application/json'
-        });
-
-        done();
-      }, 510);
+          expect(ajaxMockObj.patch).toHaveBeenCalledTimes(1);
+          expect(ajaxMockObj.patch.mock.calls[0][0]).toEqual(
+            expect.stringMatching(/\/api\/books\/123$/)
+          );
+          expect(ajaxMockObj.patch.mock.calls[0][1]).toEqual({
+            liked: true
+          });
+          expect(ajaxMockObj.patch.mock.calls[0][2]).toEqual({
+            'Content-Type': 'application/json'
+          });
+        },
+        {
+          timeout: 510
+        }
+      );
     });
   });
 });

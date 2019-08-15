@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-var-requires, import/no-extraneous-dependencies, no-console */
-const createTestCafe = require('gherkin-testcafe');
+const createTestCafe = require('testcafe');
 const utils = require('./utils');
 const compareScreenshots = require('./compare-imgs');
 const app = require('../server-dist/server.bundle');
@@ -11,6 +11,7 @@ const isLive = process.argv.slice(2).includes('--live');
 let testcafe = null;
 
 const server = app.listen(port, addr, err => {
+  global.baseUrl = `http://${addr}:${port}`;
   if (err) {
     console.error(err);
     return;
@@ -22,14 +23,13 @@ const server = app.listen(port, addr, err => {
 
       const runner = isLive ? testcafe.createLiveModeRunner() : testcafe.createRunner();
       return runner
-        .src([`${__dirname}/steps/**/*.js`, `${__dirname}/features/**/*.feature`])
+        .src(['testcafe/tests/*.ts'])
         .browsers(['chrome:headless'])
         .screenshots(
           utils.getScreenshotsPath(isBaseScreenshot),
           true,
           '${BROWSER}/${FIXTURE}-${TEST}-${FILE_INDEX}' // eslint-disable-line
         )
-        .parameterTypeRegistryFile(require.resolve('./param-type-registry.js'))
         .run();
     })
     .then(failedCount => {

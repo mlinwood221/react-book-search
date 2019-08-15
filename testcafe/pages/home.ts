@@ -1,14 +1,10 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
-const { Selector, ClientFunction } = require('testcafe');
-const BasePage = require('./base-page');
+/* eslint-disable max-classes-per-file, no-useless-constructor, no-param-reassign, class-methods-use-this */
+
+import { Selector, ClientFunction } from 'testcafe';
+import BasePage from './basePage';
 
 class BookCard {
-  /**
-   * @param {SelectorAPI} selector
-   */
-  constructor(selector) {
-    this.selector = selector;
-  }
+  constructor(private selector: Selector) {}
 
   get title() {
     return this.selector.find('.book-card__title');
@@ -28,19 +24,19 @@ class BookCard {
 }
 
 const removeImagesOnAllCards = ClientFunction(() =>
-  document.querySelectorAll('.book-card').forEach(c => {
-    // eslint-disable-next-line no-param-reassign
-    c.style = 'background-image: none; background: green';
+  (document.querySelectorAll('.book-card') as NodeListOf<HTMLElement>).forEach(c => {
+    c.style.backgroundImage = 'none';
+    c.style.background = 'green';
   })
 );
 
-module.exports = class HomePage extends BasePage {
-  constructor() {
-    super('home', '.main-layout');
+export default class HomePage extends BasePage {
+  constructor(t: TestController, baseUrl: string) {
+    super(t, baseUrl, 'home', '.main-layout');
   }
 
   async getBookCards() {
-    const bookCardSelector = await Selector('.book-card').with({ boundTestRun: this.t });
+    const bookCardSelector = await Selector('.book-card');
 
     return Array.from(
       { length: await bookCardSelector.count },
@@ -50,15 +46,15 @@ module.exports = class HomePage extends BasePage {
 
   async prepareForScreenshot() {
     await this.t.resizeWindow(1280, 800);
-    await removeImagesOnAllCards.with({ boundTestRun: this.t })();
+    await removeImagesOnAllCards();
   }
 
   get booksContainer() {
-    return Selector('.main-layout__books').with({ boundTestRun: this.t });
+    return Selector('.main-layout__books');
   }
 
   async takeScreenshotOfBooksContainer() {
     await this.prepareForScreenshot();
     await this.t.takeScreenshot();
   }
-};
+}

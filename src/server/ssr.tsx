@@ -8,9 +8,7 @@ import { StaticRouter, StaticRouterContext } from 'react-router';
 import { matchPath } from 'react-router-dom';
 import { Store } from 'redux';
 import { promisify } from 'util';
-// @ts-ignore
 import { XMLHttpRequest } from 'xmlhttprequest';
-// @ts-ignore
 import sprite from 'svg-sprite-loader/runtime/sprite.build';
 import { RouteModuleInfo } from '../routes/types';
 import App from '../App';

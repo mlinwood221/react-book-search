@@ -1,9 +1,10 @@
 {
-  "plugins": ["react", "jest", "@typescript-eslint", "react-hooks"],
+  "plugins": ["react", "@typescript-eslint", "react-hooks", "jest", "testcafe"],
   "extends": [
     "airbnb-base",
     "plugin:react/recommended",
-    "plugin:@typescript-eslint/recommended"
+    "plugin:@typescript-eslint/recommended",
+    "plugin:testcafe/recommended"
   ],
   "env": {
     "es6": true,
