@@ -5,19 +5,20 @@ import React from 'react';
 import menuIcon from '@mdi/svg/svg/menu.svg';
 import searchIcon from '@mdi/svg/svg/magnify.svg';
 import Toolbar from './index';
+import SvgButton from '../SvgButton';
 
-storiesOf('Toolbar', module).add('default', () => (
-  <Toolbar
-    icon={
-      <svg viewBox={menuIcon.viewBox} onClick={action('menuClick')}>
-        <use xlinkHref={`#${menuIcon.id}`} />
-      </svg>
-    }
-    title="Title"
-  >
-    <div onClick={action('action1')}>some action</div>
-    <svg viewBox={searchIcon.viewBox} onClick={action('action2')}>
-      <use xlinkHref={`#${searchIcon.id}`} />
-    </svg>
-  </Toolbar>
-));
+storiesOf('Toolbar', module)
+  .add('default', () => (
+    <Toolbar icon={menuIcon} title="Title" onMenuClick={action('onMenuClick')} />
+  ))
+  .add('one action', () => (
+    <Toolbar icon={menuIcon} title="Title" onMenuClick={action('onMenuClick')}>
+      <SvgButton invertedColor icon={searchIcon} onClick={action('action click')} />
+    </Toolbar>
+  ))
+  .add('multiple actions', () => (
+    <Toolbar icon={menuIcon} title="Title" onMenuClick={action('onMenuClick')}>
+      <SvgButton invertedColor icon={searchIcon} onClick={action('action click')} />
+      <div onClick={action('other action click')}>text action</div>
+    </Toolbar>
+  ));

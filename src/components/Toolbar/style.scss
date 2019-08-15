@@ -9,11 +9,12 @@
   display: flex;
   flex-flow: row nowrap;
   align-items: center;
-  padding: get($spaces, 1000);
+  padding: get($spaces, 1000) get($spaces, 1500);
   position: sticky;
   top: 0;
   left: 0;
   z-index: 3;
+  height: get($spaces, 2000);
 
   &__icon {
     flex: 0 0 auto;
