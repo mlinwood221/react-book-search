@@ -18,10 +18,15 @@ test('book cards are visible', async t => {
   await homePage.takeScreenshotOfBooksContainer();
 });
 
-test('SSR home route, returns redux state', async t => {
-  const logger = await homePage.startLoggingServerResponses();
-  await homePage.open();
+let logger: RequestLogger;
 
+fixture('SSR Home route').beforeEach(async t => {
+  homePage = new HomePage(t, global.baseUrl);
+  logger = await homePage.startLoggingServerResponses();
+  await homePage.open();
+});
+
+test('server response returns redux state', async t => {
   await t
     .expect(
       logger.contains(
@@ -37,10 +42,7 @@ test('SSR home route, returns redux state', async t => {
     .ok();
 });
 
-test('SSR home route, returns pre-rendered HTML', async t => {
-  const logger = await homePage.startLoggingServerResponses();
-  await homePage.open();
-
+test('server response returns pre-rendered HTML', async t => {
   await Promise.all(
     [
       /<div id="app"><div>.+?<\/div><\/div>/,
@@ -68,4 +70,10 @@ test('SSR home route, returns pre-rendered HTML', async t => {
       )
     )
     .ok();
+});
+
+test('browser does not request route bundle', async t => {
+  await t
+    .expect(logger.contains(record => /\/home\..{20}\.bundle\.js/.test(record.request.url)))
+    .notOk();
 });
