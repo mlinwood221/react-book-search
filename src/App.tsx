@@ -31,8 +31,6 @@ const App = (props: Props) => (
 App.displayName = 'App';
 
 setConfig({
-  logLevel: 'debug',
-  ignoreSFC: true,
-  pureRender: true
+  logLevel: 'debug'
 });
 export default hot(App);

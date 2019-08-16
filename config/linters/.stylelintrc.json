@@ -1,10 +1,6 @@
 {
   "extends": "stylelint-config-standard",
-  "plugins": [
-    "stylelint-scss",
-    "stylelint-selector-bem-pattern",
-    "stylelint-no-unsupported-browser-features"
-  ],
+  "plugins": ["stylelint-scss", "stylelint-selector-bem-pattern"],
   "rules": {
     "scss/selector-no-redundant-nesting-selector": true,
     "no-duplicate-selectors": true,
@@ -16,13 +12,6 @@
       "componentSelectors": {
         "initial": "^(?:%(?:[a-z]+-?)+)|(?:\\.{componentName}(?:(?:--(?:[a-z]+-?)+)?(?:__(?:[a-z]+-?)+(?:--(?:[a-z]+-?)+)?)?)\\b(?:\\[.+\\])?)+$"
       }
-    },
-    "plugin/no-unsupported-browser-features": [
-      true,
-      {
-        "severity": "warning",
-        "ignore": ["multicolumn"]
-      }
-    ]
+    }
   }
 }

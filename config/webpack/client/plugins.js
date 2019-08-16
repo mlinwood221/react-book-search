@@ -10,7 +10,11 @@ const ManifestPlugin = require('webpack-manifest-plugin');
 const SpriteLoaderPlugin = require('svg-sprite-loader/plugin');
 
 const devPlugins = [
-  new webpack.HotModuleReplacementPlugin(),
+  new StyleLintPlugin({
+    configFile: 'config/linters/.stylelintrc.json',
+    syntax: 'scss',
+    failOnError: true
+  }),
   new webpack.NamedModulesPlugin()
 ];
 
@@ -20,10 +24,6 @@ const prodPlugins = distPath => [
     hashFunction: 'sha256',
     hashDigest: 'hex',
     hashDigestLength: 20
-  }),
-  new webpack.LoaderOptionsPlugin({
-    minimize: true,
-    debug: false
   }),
   new CopyWebpackPlugin([
     {
@@ -36,10 +36,6 @@ const prodPlugins = distPath => [
 
 module.exports = function getPlugins(isProduction, distPath) {
   return (isProduction ? prodPlugins(distPath) : devPlugins).concat([
-    new StyleLintPlugin({
-      configFile: 'config/linters/.stylelintrc.json',
-      syntax: 'scss'
-    }),
     new MiniCssExtractPlugin({
       filename: isProduction ? '[name].[contenthash].css' : '[name].css' // @see: https://survivejs.com/webpack/optimizing/adding-hashes-to-filenames/
     }),

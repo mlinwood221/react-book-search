@@ -40,7 +40,7 @@ module.exports = {
   },
   optimization: {
     runtimeChunk: 'single',
-    moduleIds: 'hashed',
+    moduleIds: isProductionMode ? 'hashed' : false,
     noEmitOnErrors: true,
     splitChunks: {
       chunks: 'all'
