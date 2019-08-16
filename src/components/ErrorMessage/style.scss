@@ -1,0 +1,28 @@
+@import '../scss/variables';
+
+/* @define error-message */
+.error-message {
+  font-family: $default-font-family;
+  padding: 0 get($spaces, 1500);
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  background: get($colors, error);
+  color: lighten(get($colors, error), 80%);
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 10;
+  width: 100%;
+
+  &__icon {
+    fill: lighten(get($colors, error), 80%);
+    height: 3em;
+    width: 3em;
+    margin-right: get($spaces, 1000);
+  }
+
+  &__message {
+    font-size: 1.5em;
+  }
+}

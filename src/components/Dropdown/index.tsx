@@ -44,7 +44,7 @@ const Dropdown = <T extends {}>(props: Props<T>) => {
 
   return (
     <div
-      className={`dropdown ${isOpened && 'dropdown--opened'}`}
+      className={`dropdown ${isOpened ? 'dropdown--opened' : ''}`}
       onMouseLeave={handleMouseLeave}
     >
       <div
@@ -89,4 +89,4 @@ const Dropdown = <T extends {}>(props: Props<T>) => {
   );
 };
 
-export default (React.memo(Dropdown) as <T extends {}>(props: Props<T>) => JSX.Element);
+export default React.memo(Dropdown) as <T extends {}>(props: Props<T>) => JSX.Element;

@@ -3,7 +3,7 @@ import navigateIcon from '@mdi/svg/svg/chevron-left.svg';
 import SvgButton from '../SvgButton';
 import './style.scss';
 
-export type Props = {
+type Props = {
   currentPage: number;
   pageCount: number;
   showPage: (page: number) => void;

@@ -19,6 +19,6 @@ const bookDetail: Detail = {
   published: new Date('2018-09-18T01:59:14.918Z')
 };
 
-storiesOf('BookDetail', module).add('default', () => (
+storiesOf('Layouts|BookDetail', module).add('default', () => (
   <BookDetail bookDetail={bookDetail} goBack={action('goBack')} />
 ));

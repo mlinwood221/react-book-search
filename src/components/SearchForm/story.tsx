@@ -12,14 +12,12 @@ function getSearchParams(count: number) {
 }
 
 storiesOf('Search form', module).add('default', () => (
-  <div>
-    <SearchForm
-      search={action('search')}
-      selectedCategory="selected category"
-      selectedGenre="selected genre"
-      selectedQuery="selected query"
-      availableCategories={getSearchParams(2)}
-      availableGenres={getSearchParams(5)}
-    />
-  </div>
+  <SearchForm
+    search={action('search')}
+    selectedCategory="selected category"
+    selectedGenre="selected genre"
+    selectedQuery="selected query"
+    availableCategories={getSearchParams(2)}
+    availableGenres={getSearchParams(5)}
+  />
 ));

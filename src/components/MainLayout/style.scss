@@ -10,7 +10,6 @@
     'books info'
     'pagination info';
   font-family: $default-font-family;
-  height: 100vh;
 
   &__status {
     position: fixed;
@@ -22,6 +21,17 @@
 
   &__search {
     grid-area: search;
+    transition-property: max-height, padding;
+    transition-duration: get($times, 500);
+    transition-timing-function: ease;
+    max-height: 0;
+    overflow: hidden;
+
+    &--visible {
+      padding-top: get($spaces, 1000);
+      max-height: max-content;
+      overflow: visible;
+    }
   }
 
   &__books {
@@ -34,7 +44,7 @@
 
   &__search,
   &__books {
-    padding: get($spaces, 1000);
+    margin: 0 get($spaces, 1000);
   }
 
   &__pagination {

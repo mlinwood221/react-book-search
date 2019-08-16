@@ -5,7 +5,7 @@ import { SearchParam } from '../../redux/searchParams/types';
 import SvgButton from '../SvgButton';
 import './style.scss';
 
-export type Props = {
+type Props = {
   search: (category: string, genre: string, query: string) => void;
   selectedCategory?: string;
   selectedGenre?: string;

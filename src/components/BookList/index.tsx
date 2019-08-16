@@ -2,7 +2,7 @@ import React from 'react';
 import { Book } from '../../redux/books/types';
 import BookCard from '../BookCard';
 
-export type Props = {
+type Props = {
   books: Book[];
   onBookClick: (book: Book) => void;
   onBookLike: (book: Book) => void;
