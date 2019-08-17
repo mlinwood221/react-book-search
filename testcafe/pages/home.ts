@@ -53,7 +53,7 @@ export default class HomePage extends BasePage {
     return Selector('.main-layout__books');
   }
 
-  async takeScreenshotOfBooksContainer() {
+  async takeScreenshot() {
     await this.prepareForScreenshot();
     await this.t.takeScreenshot();
   }

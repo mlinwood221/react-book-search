@@ -15,7 +15,7 @@ test('book cards are visible', async t => {
   await homePage.open();
   const bookCards = await homePage.getBookCards();
   await t.expect(bookCards.length).eql(10);
-  await homePage.takeScreenshotOfBooksContainer();
+  await homePage.takeScreenshot();
 });
 
 let logger: RequestLogger;
