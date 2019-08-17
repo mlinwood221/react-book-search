@@ -42,7 +42,9 @@ export default function createReduxStore(rootEpic: Epic) {
   });
 
   const composeEnhancers =
-    (typeof window !== 'undefined' && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__) ||
+    (process.env.NODE_ENV === 'development' &&
+      !process.env.SERVER &&
+      window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__) ||
     compose;
 
   const store = createStore(
