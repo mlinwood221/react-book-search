@@ -24,7 +24,7 @@
   },
   "settings": {
     "react": {
-      "version": "16.6.3"
+      "version": "16.9.0"
     },
     "import/resolver": {
       "node": {
@@ -69,5 +69,13 @@
     "@typescript-eslint/no-object-literal-type-assertion": "off",
     "react-hooks/rules-of-hooks": "error",
     "react-hooks/exhaustive-deps": "warn"
-  }
+  },
+  "overrides": [
+    {
+      "files": ["*.test.ts", "*.test.tsx"],
+      "rules": {
+        "@typescript-eslint/ban-ts-ignore": "off"
+      }
+    }
+  ]
 }

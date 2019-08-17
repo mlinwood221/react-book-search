@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction } from 'express';
+import Koa from 'koa';
 import fs from 'fs';
 import path from 'path';
 import React from 'react';
@@ -109,9 +109,8 @@ function waitForInitialData(
 }
 
 export default async function handleRender(
-  req: Request,
-  res: Response,
-  next: NextFunction
+  ctx: Koa.Context,
+  next: () => Promise<unknown>
 ) {
   const epicConfig = configureEpic();
   const store = createReduxStore(epicConfig.rootEpic);
@@ -127,38 +126,34 @@ export default async function handleRender(
   )
     .map(route => ({
       ...route,
-      reactRouterMatch: matchPath(req.path, route)
+      reactRouterMatch: matchPath(ctx.request.path, route)
     }))
     .find(r => !!r.reactRouterMatch);
 
   const reactRouterStaticContext: StaticRouterContext = {};
 
-  try {
-    if (routeMatch && routeMatch.loadSSRData)
-      routeMatch.loadSSRData(
-        store.dispatch,
-        routeMatch.reactRouterMatch ? routeMatch.reactRouterMatch.params : null
-      );
-
-    const renderedHtml = routeMatch
-      ? await waitForInitialData(
-        store,
-        req.url,
-        reactRouterStaticContext,
-        loadedChunkNames
-      )
-      : renderApp(store, req.url, reactRouterStaticContext, loadedChunkNames);
-
-    const renderedPage = await renderPageWithReduxStateAndInlineScripts(
-      store.getState(),
-      loadedChunkNames,
-      renderedHtml
+  if (routeMatch && routeMatch.loadSSRData)
+    routeMatch.loadSSRData(
+      store.dispatch,
+      routeMatch.reactRouterMatch ? routeMatch.reactRouterMatch.params : null
     );
 
-    if (reactRouterStaticContext.url) res.redirect(301, reactRouterStaticContext.url);
-    else res.send(renderedPage);
-    next();
-  } catch (error) {
-    next(error);
-  }
+  const renderedHtml = routeMatch
+    ? await waitForInitialData(
+      store,
+      ctx.request.url,
+      reactRouterStaticContext,
+      loadedChunkNames
+    )
+    : renderApp(store, ctx.request.url, reactRouterStaticContext, loadedChunkNames);
+
+  const renderedPage = await renderPageWithReduxStateAndInlineScripts(
+    store.getState(),
+    loadedChunkNames,
+    renderedHtml
+  );
+
+  if (reactRouterStaticContext.url) ctx.response.redirect(reactRouterStaticContext.url);
+  else ctx.body = renderedPage;
+  await next();
 }

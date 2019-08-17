@@ -228,7 +228,6 @@ describe('Home route', () => {
               /\/api\/books\?page=4&category=test categ&genre=test genre&query=test query$/
             )
           );
-          
         },
         {
           timeout: 510
@@ -309,7 +308,6 @@ describe('Home route', () => {
               /\/api\/books\?page=2&category=test categ&genre=test genre&query=test query$/
             )
           );
-          
         },
         {
           timeout: 510
@@ -429,7 +427,6 @@ describe('Home route', () => {
               /\/api\/books\?page=1&category=Fiction&genre=Genre 2&query=ccc$/
             )
           );
-          
         },
         {
           timeout: 510

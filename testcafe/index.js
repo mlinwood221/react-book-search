@@ -10,12 +10,12 @@ const isBaseScreenshot = process.argv.slice(2).includes('--base-screenshots');
 const isLive = process.argv.slice(2).includes('--live');
 let testcafe = null;
 
-const server = app.listen(port, addr, err => {
+// Disable gzip compression, so TestCafe's RequestLogger works properly
+app.use(ctx => {
+  ctx.compress = false;
+});
+const server = app.listen(port, addr, () => {
   global.baseUrl = `http://${addr}:${port}`;
-  if (err) {
-    console.error(err);
-    return;
-  }
 
   createTestCafe()
     .then(tc => {

@@ -1,42 +1,46 @@
-import express from 'express';
+import Router from 'koa-router';
 import * as dataMock from './data-mock';
 
-const apiRouter = express.Router();
+const apiRouter = new Router({
+  prefix: '/api'
+});
 
-apiRouter.get('/books', (req, res) => {
+apiRouter.get('/books', ctx => {
   const result = dataMock.getPagedBooksSearch({
-    page: req.query.page ? parseInt(req.query.page, 10) : 1,
-    category: Array.isArray(req.query.category) ? req.query.category[0] : req.query.category,
-    genre: Array.isArray(req.query.genre) ? req.query.genre[0] : req.query.genre,
-    query: Array.isArray(req.query.query) ? req.query.query[0] : req.query.query
+    page: ctx.query.page ? parseInt(ctx.query.page, 10) : 1,
+    category: Array.isArray(ctx.query.category)
+      ? ctx.query.category[0]
+      : ctx.query.category,
+    genre: Array.isArray(ctx.query.genre) ? ctx.query.genre[0] : ctx.query.genre,
+    query: Array.isArray(ctx.query.query) ? ctx.query.query[0] : ctx.query.query
   });
 
-  res.header('X-total-count', result.totalPages.toString());
-  res.json(result.books);
+  ctx.set('X-total-count', result.totalPages.toString());
+  ctx.body = result.books;
 });
 
-apiRouter.param('bookId', (req, res, next, id: string) => {
+apiRouter.param('bookId', (id, ctx, next) => {
   const result = dataMock.getBookById(id);
-  res.locals.book = result;
-  next();
+  ctx.book = result;
+  return next();
 });
 
-apiRouter.get('/books/:bookId', (req, res) => {
-  res.json(res.locals.book);
+apiRouter.get('/books/:bookId', ctx => {
+  ctx.body = ctx.book;
 });
 
-apiRouter.patch('/books/:bookId', (req, res) => {
-  res.locals.book.liked = req.body.liked;
-  res.locals.book.likes += req.body.liked ? 1 : -1;
-  res.json(res.locals.book);
+apiRouter.patch('/books/:bookId', ctx => {
+  ctx.book.liked = ctx.request.body.liked;
+  ctx.book.likes += ctx.request.body.liked ? 1 : -1;
+  ctx.body = ctx.book;
 });
 
-apiRouter.get('/searchCategories', (req, res) => {
-  res.json(dataMock.bookCategories);
+apiRouter.get('/searchCategories', ctx => {
+  ctx.body = dataMock.bookCategories;
 });
 
-apiRouter.get('/searchGenres', (req, res) => {
-  res.json(dataMock.bookGenres);
+apiRouter.get('/searchGenres', ctx => {
+  ctx.body = dataMock.bookGenres;
 });
 
 export default apiRouter;

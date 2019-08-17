@@ -1,30 +1,31 @@
-import express from 'express';
-import bodyParser from 'body-parser';
+import Koa from 'koa';
+import serve from 'koa-static';
+import compress from 'koa-compress';
+import bodyParser from 'koa-bodyparser';
 import api from './api';
 import ssr from './ssr';
 
-const app = express();
+const app = new Koa();
 
 // Serve static files
-app.use(
-  express.static('dist', {
-    index: false,
-    maxAge: '1d'
-  })
-);
+app
+  .use(
+    serve('dist', {
+      index: false
+    })
+  )
+  .use(compress())
+  .use(bodyParser());
 
-app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', '*');
-  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,PATCH');
-  res.header('Access-Control-Allow-Headers', 'content-type');
-  res.header('access-control-expose-headers', 'x-total-count');
-  next();
+app.use(async (ctx, next) => {
+  ctx.set('Access-Control-Allow-Origin', '*');
+  ctx.set('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,PATCH');
+  ctx.set('Access-Control-Allow-Headers', 'content-type');
+  ctx.set('access-control-expose-headers', 'x-total-count');
+  await next();
 });
 
-app.use(bodyParser.json()); // for parsing application/json
-
-// Main API endpoint
-app.use('/api', api);
+app.use(api.routes()).use(api.allowedMethods());
 
 // This is fired every time the server side receives a request
 app.use(ssr);
