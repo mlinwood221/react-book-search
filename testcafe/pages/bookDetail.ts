@@ -4,9 +4,13 @@ import { Selector, ClientFunction } from 'testcafe';
 import BasePage from './basePage';
 
 const removeImage = ClientFunction(() => {
-  const img = document.querySelector('.book-detail__image') as HTMLImageElement;
-  img.src = '';
-  img.style.background = 'green';
+  ([
+    document.querySelector('.book-detail__image'),
+    document.querySelector('.book-detail__author-img')
+  ] as HTMLImageElement[]).forEach(img => {
+    img.src = '';
+    img.style.background = 'green';
+  });
 });
 
 export default class BookDetailPage extends BasePage {

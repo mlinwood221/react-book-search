@@ -10,7 +10,8 @@ export default function booksReducer(state: State = initialState, action: Action
     case 'react-book-search/bookDetail/GET_BOOK_DETAIL':
       return {
         ...state,
-        loading: true
+        loading: true,
+        bookDetail: null
       };
     case 'react-book-search/bookDetail/BOOK_DETAIL_RECEIVED':
       return {

@@ -1,4 +1,4 @@
-import { applyMiddleware, combineReducers, createStore } from 'redux';
+import { applyMiddleware, combineReducers, createStore, compose } from 'redux';
 import { createEpicMiddleware, Epic } from 'redux-observable';
 import { ajax } from 'rxjs/ajax';
 import initialReducers from './initial-reducers';
@@ -17,6 +17,7 @@ export type State = InitialState & Partial<AsyncState>;
 
 declare const window: {
   __PRELOADED_STATE__: InitialState;
+  __REDUX_DEVTOOLS_EXTENSION_COMPOSE__: Function;
 };
 
 function getServerPreloadedState(): InitialState | null {
@@ -40,10 +41,14 @@ export default function createReduxStore(rootEpic: Epic) {
     dependencies: { ajax }
   });
 
+  const composeEnhancers =
+    (typeof window !== 'undefined' && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__) ||
+    compose;
+
   const store = createStore(
     combineReducers(initialReducers),
     getServerPreloadedState() || {},
-    applyMiddleware(epicMiddleware, ...middlewares)
+    composeEnhancers(applyMiddleware(epicMiddleware, ...middlewares))
   );
 
   epicMiddleware.run(rootEpic);
