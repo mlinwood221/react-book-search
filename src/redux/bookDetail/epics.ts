@@ -15,7 +15,7 @@ export default function bookDetailEpic(
     ),
     mergeMap(value =>
       ajax({
-        url: `http://localhost:3001/api/books/${
+        url: `${process.env.API_URL}/api/books/${
           (value as GetBookDetailAction).payload.bookId
         }`
       }).pipe(map(result => actions.bookDetailsReceived(result.response)))

@@ -23,8 +23,7 @@ module.exports = {
   entry: './server/app.ts',
   output: {
     libraryTarget: 'commonjs2',
-    libraryExport: 'default',
-    auxiliaryComment: 'Exported express app',
+    auxiliaryComment: 'Exported Koa app and Nodejs server',
     path: distPath,
     filename: 'server.bundle.js'
   },
@@ -37,7 +36,9 @@ module.exports = {
   plugins: [
     new CleanWebpackPlugin(),
     new webpack.EnvironmentPlugin({
-      SERVER: true
+      NODE_ENV: 'development',
+      SERVER: true,
+      API_URL: null
     })
   ],
   devtool: isProductionMode ? 'none' : 'inline-source-map',

@@ -2,10 +2,9 @@
 const createTestCafe = require('testcafe');
 const utils = require('./utils');
 const compareScreenshots = require('./compare-imgs');
-const app = require('../server-dist/server.bundle');
+const { app, server } = require('../server-dist/server.bundle');
 
 const port = 3001;
-const addr = 'localhost';
 const isBaseScreenshot = process.argv.slice(2).includes('--base-screenshots');
 const isLive = process.argv.slice(2).includes('--live');
 let testcafe = null;
@@ -14,8 +13,9 @@ let testcafe = null;
 app.use(ctx => {
   ctx.compress = false;
 });
-const server = app.listen(port, addr, () => {
-  global.baseUrl = `http://${addr}:${port}`;
+
+server.listen(port, () => {
+  global.baseUrl = `https://localhost:${port}`;
 
   createTestCafe()
     .then(tc => {

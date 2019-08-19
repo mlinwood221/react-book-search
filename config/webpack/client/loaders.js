@@ -17,7 +17,7 @@ module.exports = function getLoaders(isProductionMode, srcPath) {
         }
       }
     },
-    {
+    isProductionMode ? {} : {
       test: /\.jsx?$/,
       include: /node_modules/,
       use: ['react-hot-loader/webpack']

@@ -36,7 +36,7 @@ function getBookPageEpic(
         ''
       );
       return ajax({
-        url: `http://localhost:3001/api/books?${queryParams}`
+        url: `${process.env.API_URL}/api/books?${queryParams}`
       }).pipe(
         map(result =>
           actions.booksReceived(
@@ -60,7 +60,7 @@ function likeBookEpic(
     debounceTime(500),
     switchMap(action =>
       ajax.patch(
-        `http://localhost:3001/api/books/${action.payload.bookId}`,
+        `${process.env.API_URL}/api/books/${action.payload.bookId}`,
         {
           liked: action.payload.liked
         },

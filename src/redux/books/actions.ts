@@ -1,6 +1,11 @@
 import { Book } from './types';
 
-export function getBookPage(page: number, category?: string, genre?: string, query?: string) {
+export function getBookPage(
+  page: number,
+  category?: string,
+  genre?: string,
+  query?: string
+) {
   return {
     type: 'react-book-search/books/GET_BOOK_PAGE',
     payload: {
@@ -42,6 +47,7 @@ export function bookRefreshed(book: Book) {
 }
 
 export function serverError(err: Error) {
+  if (process.env.NODE_ENV === 'development') console.error(err);
   return {
     type: 'react-book-search/books/SERVER_ERROR',
     payload: {

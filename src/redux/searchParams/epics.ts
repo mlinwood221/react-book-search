@@ -26,7 +26,7 @@ function getCategoriesEpic(
     ofType('react-book-search/searchParams/GET_CATEGORIES'),
     mergeMap(() =>
       ajax({
-        url: 'http://localhost:3001/api/searchCategories'
+        url: `${process.env.API_URL}/api/searchCategories`
       }).pipe(
         map(result => actions.categoriesReceived(result.response)),
         catchError((error: AjaxError) =>
@@ -46,7 +46,7 @@ function getGenresEpic(
     ofType('react-book-search/searchParams/GET_GENRES'),
     mergeMap(() =>
       ajax({
-        url: 'http://localhost:3001/api/searchGenres'
+        url: `${process.env.API_URL}/api/searchGenres`
       }).pipe(
         map(result => actions.genresReceived(result.response)),
         catchError((error: AjaxError) =>

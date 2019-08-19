@@ -40,8 +40,9 @@ module.exports = function getPlugins(isProduction, distPath) {
       filename: isProduction ? '[name].[contenthash].css' : '[name].css' // @see: https://survivejs.com/webpack/optimizing/adding-hashes-to-filenames/
     }),
     new webpack.EnvironmentPlugin({
-      NODE_ENV: process.env.NODE_ENV || 'development',
-      SERVER: false
+      NODE_ENV: 'development',
+      SERVER: false,
+      API_URL: null
     }),
     new HtmlWebpackPlugin({
       title: 'React book search sample - By Danilo Cestari',

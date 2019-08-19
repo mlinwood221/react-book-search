@@ -1,3 +1,5 @@
+import fs from 'fs';
+import http2 from 'http2';
 import Koa from 'koa';
 import serve from 'koa-static';
 import compress from 'koa-compress';
@@ -5,9 +7,8 @@ import bodyParser from 'koa-bodyparser';
 import api from './api';
 import ssr from './ssr';
 
-const app = new Koa();
+export const app = new Koa();
 
-// Serve static files
 app
   .use(
     serve('dist', {
@@ -30,4 +31,11 @@ app.use(api.routes()).use(api.allowedMethods());
 // This is fired every time the server side receives a request
 app.use(ssr);
 
-export default app;
+export const server = http2.createSecureServer(
+  {
+    key: fs.readFileSync('./server.key'),
+    cert: fs.readFileSync('./server.cert'),
+    allowHTTP1: true
+  },
+  app.callback()
+);

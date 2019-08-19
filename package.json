@@ -114,20 +114,20 @@
   "scripts": {
     "typecheck": "tsc --resolveJsonModule",
     "test": "cross-env NODE_ENV='test' jest --config config/jest/config.json --verbose",
-    "prestart-server": "webpack --config config/webpack/server/config.js",
-    "start-server": "node ./run-server.js",
+    "prestart-server": "cross-env NODE_ENV='production' API_URL='https://localhost:3001' webpack --config config/webpack/server/config.js",
+    "start-server": "cross-env NODE_TLS_REJECT_UNAUTHORIZED=0 node ./run-server.js",
+    "debug-server": "cross-env API_URL='https://localhost:3001' webpack --config config/webpack/server/config.js",
+    "postdebug-server": "cross-env NODE_TLS_REJECT_UNAUTHORIZED=0 node --inspect-brk ./run-server.js",
     "prestart": "yarn typecheck",
-    "start": "yarn start-server & webpack-dev-server --config config/webpack/client/config.js",
+    "start": "yarn start-server & cross-env API_URL='https://localhost:3001' webpack-dev-server --config config/webpack/client/config.js",
     "prebuild": "yarn typecheck",
-    "build": "cross-env NODE_ENV=\"'production'\" webpack --config config/webpack/webpack.config.js",
-    "prewebpack-bundle-analyzer": "cross-env NODE_ENV=\"'production'\" webpack --profile --json --config config/webpack/client/config.js > ./stats.json",
+    "build": "cross-env NODE_ENV='production' API_URL='https://localhost:3001' webpack --config config/webpack/webpack.config.js",
+    "prewebpack-bundle-analyzer": "cross-env NODE_ENV='production' webpack --profile --json --config config/webpack/client/config.js > ./stats.json",
     "webpack-bundle-analyzer": "webpack-bundle-analyzer ./stats.json ./dist",
-    "serve": "yarn build && yarn start-server",
-    "debug-server": "cross-env NODE_ENV=\"'development'\" webpack --config config/webpack/webpack.config.js && node --inspect-brk ./run-server.js",
     "storybook": "start-storybook -p 6006",
     "lint": "eslint -c ./config/linters/.eslintrc.json --ext tsx,ts src",
     "lint-fix": "eslint -c ./config/linters/.eslintrc.json --ext tsx,ts src --fix",
     "build-storybook": "build-storybook -o public",
-    "e2e": "node testcafe"
+    "e2e": "cross-env NODE_TLS_REJECT_UNAUTHORIZED=0 node testcafe"
   }
 }

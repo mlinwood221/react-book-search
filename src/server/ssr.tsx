@@ -99,6 +99,8 @@ function waitForInitialData(
   return new Promise(resolve => {
     let unsubscribe: () => void;
     function handleStoreChange() {
+      if (process.env.NODE_ENV === 'development')
+        console.log('STORE CHANGED', store.getState());
       if (store.getState().ssr && store.getState().ssr.ready) {
         resolve(renderApp(store, url, reactRouterStaticContext, loadedChunkNames));
         unsubscribe();
