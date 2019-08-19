@@ -10,12 +10,12 @@ import ssr from './ssr';
 export const app = new Koa();
 
 app
+  .use(compress())
   .use(
     serve('dist', {
       index: false
     })
   )
-  .use(compress())
   .use(bodyParser());
 
 app.use(async (ctx, next) => {

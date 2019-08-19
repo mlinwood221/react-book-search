@@ -22,10 +22,10 @@ export default function asyncComponent(
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   return class AsyncComponent extends Component<any, State> {
     static setupModuleState(mod: AsyncModule) {
-      console.log('Appending reducer for:', chunkName);
-      if (appendAsyncReducer) appendAsyncReducer(mod.routeModule);
+      if (process.env.NODE_ENV === 'development')
+        console.log('Appending reducer and epic for:', chunkName); // eslint-disable-line
 
-      console.log('Appending epic for:', chunkName);
+      if (appendAsyncReducer) appendAsyncReducer(mod.routeModule);
       if (epicSubject$) epicSubject$.next(mod.routeModule.epic);
     }
 
