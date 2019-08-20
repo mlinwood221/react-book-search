@@ -7,3 +7,4 @@
 /testcafe/screenshots/diffs
 /testcafe/screenshots/base/**/thumbnails
 stats.json
+lighthouse-results.html
